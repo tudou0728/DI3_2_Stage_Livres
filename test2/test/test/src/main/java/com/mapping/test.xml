@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.UserDao">
+<resultMap id="BaseUserMap" type="com.entity.User">
+	<id property="userId" column="user_userId"/>
+	<collection property="demandes" ofType="com.entity.Demande"></collection>
+</resultMap>
+
+	<select id="userGetDemandes" resultMap="BaseUserMap">
+		select* from user left join demande on user.userId=demande.userId where user.userId=#{0}
+	</select>
+	
+	<select id="userLogIn" resultType="com.entity.User">
+		select * from user where USERID=#{0} and PASSWORD=#{1}
+	</select>
+		
+	<select id="verifyUserName" resultType="com.entity.User">
+			select * from user where USERNAME=#{name}
+	</select>
+	
+	<select id="verifyUserId" resultType="com.entity.User">
+			select * from user where USERID=#{id}
+	</select>
+	
+	
+	<insert id="insertUser">
+		insert into user(USERID,USERNAME,PASSWORD,USERENTERPRISE,CREATEDATE,DELETEDATE) values (#{userId,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{passWord,jdbcType=VARCHAR},#{userEnterprise,jdbcType=VARCHAR},#{createDate,jdbcType=DATE},#{deleteDate,jdbcType=DATE})
+	</insert>
+	
+	<update id="updateUser">
+		update user set USERNAME=#{userName,jdbcType=VARCHAR},PASSWORD=#{passWord,jdbcType=VARCHAR},USERENTERPRISE=#{userEnterprise,jdbcType=VARCHAR},CREATEDATE=#{createDate,jdbcType=DATE},DELETEDATE=#{deleteDate,jdbcType=DATE} WHERE USERID=#{userId,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteUser">
+		delete from user where USERID=#{id}
+	</delete>
+
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.DemandeDao">
+<resultMap id="BaseDemandeMap" type="com.entity.Demande">
+		<id property="demandeId" column="demande_demandeId"/>
+		<id property="bookId" column="demande_bookId"/>
+</resultMap>
+		<select id="listDemande" resultType="com.entity.Demande">
+		select* from demande
+	    </select>
+	    
+	    <select id="listDemandeOrderByDate" resultType="com.entity.Demande">
+		select* from demande order by CREATEDATE,DEMANDEID
+	    </select>
+	    
+	    <select id="getDemande" resultType="com.entity.Demande">
+	    	select* from demande where DEMANDEID=#{0} 
+	    </select>
+	    
+	    <select id="getDemandeByBookId" resultType="com.entity.Demande">
+	    	select* from demande where DEMANDEID=#{0} and BOOKID=#{1}
+	    </select>
+	    
+	    <select id="getDemandeByUserOrderByDate" resultType="com.entity.Demande">
+	    	select* from demande where USERID=#{0}
+	    </select>
+	    
+	    <select id="getDemandeNotPay" resultType="com.entity.Demande">
+	    	select* from demande where PAYORNOT='0' and USERID=#{0}
+	    </select>
+	    
+	     <select id="getDemandeLikeDId" resultType="com.entity.Demande">
+	    	select* from demande where demandeId like #{0} and USERID=#{1}
+	    </select>
+	    
+	    <insert id="insertDemande">
+	    	insert into demande(DEMANDEID,USERID,BOOKID,QUANTITY,TOTALPRICE,PAYORNOT,CREATEDATE,DELIVERYADRESS,DELIVERORNOT,COMMENTORNOT) values (#{demandeId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{bookId,jdbcType=VARCHAR},#{quantity,jdbcType=NUMERIC},#{totalPrice,jdbcType=FLOAT},#{payOrNot,jdbcType=NUMERIC},#{createDate,jdbcType=TIMESTAMP},#{deliveryAdress,jdbcType=VARCHAR},#{deliverOrNot,jdbcType=NUMERIC},#{commentOrNot,jdbcType=NUMERIC})
+	    </insert>
+
+		<update id="updateDemande">
+			update demande set USERID=#{userId,jdbcType=VARCHAR},QUANTITY=#{quantity,jdbcType=NUMERIC},TOTALPRICE=#{totalPrice,jdbcType=FLOAT},PAYORNOT=#{payOrNot,jdbcType=NUMERIC},CREATEDATE=#{createDate,jdbcType=TIMESTAMP},DELIVERYADRESS=#{deliveryAdress,jdbcType=VARCHAR},DELIVERORNOT=#{deliverOrNot,jdbcType=NUMERIC},COMMENTORNOT=#{commentOrNot,jdbcType=NUMERIC} where DEMANDEID=#{demandeId,jdbcType=VARCHAR} and BOOKID=#{bookId,jdbcType=VARCHAR}
+		</update>
+		
+		<update id="updateDemandeId">
+		update demande set DEMANDEID=#{0} where DEMANDEID=#{1} and BOOKID=#{2} 
+		</update>
+		
+		<delete id="deleteDemande">
+		delete from demande where DEMANDEID=#{0} and BOOKID=#{1} 
+		</delete>
+
+</mapper>

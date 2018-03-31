@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.CommentDao">
+<resultMap id="CommentMap" type="com.entity.Comment">
+</resultMap>
+	<select id="searchCommentByBookId" resultType="com.entity.Comment">
+		select * from comment where  bookId=#{0}  ORDER BY commentNo
+	</select>
+	
+	<select id="searchCommentByBIdDid" resultType="com.entity.Comment">
+		select * from comment where  demandeId=#{0} and bookId=#{1}
+	</select>
+	
+	<insert id="addComment">
+		insert into comment(DEMANDEID,BOOKID,USERID,BOOKCOMMENT,GRADE,COMMENTDATE,COMMENTNO) values(#{demandeId,jdbcType=VARCHAR},#{bookId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{bookComment,jdbcType=VARCHAR},#{grade,jdbcType=FLOAT},#{commentDate,jdbcType=TIMESTAMP},#{commentNo,jdbcType=NUMERIC})
+	</insert>
+	
+	<update id="updateComment">
+		update comment set BOOKCOMMENT=#{bookComment,jdbcType=VARCHAR},GRADE=#{grade,jdbcType=FLOAT},COMMENTDATE=#{commentDate,jdbcType=TIMESTAMP} where DEMANDEID=#{demandeId,jdbcType=VARCHAR} and BOOKID=#{bookIdId,jdbcType=VARCHAR} and COMMENTNO=#{commentNo,jdbcType=NUMERIC}
+	</update>
+	
+	<delete id="deleteComment">
+		delete from comment where demandeId=#{0} and bookId=#{1} and commentNo=#{2}
+	</delete>
+
+</mapper>

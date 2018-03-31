@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.DeliveryDao">
+<resultMap id="BaseDeliveryMap" type="com.entity.Delivery">
+	<id property="deliveryId" column="delivery_delivery_deliveryId"/>
+	<collection property="demandesForDelivery" ofType="com.entity.Demande"></collection>
+</resultMap>
+		<select id="listDelivery" resultType="com.entity.Delivery">
+		select* from delivery
+	    </select>
+	    
+	    <select id="searchDeliveryByUserId" resultType="com.entity.Delivery">
+		select* from delivery where USERID=#{0} order by CREATEDATE DESC
+	    </select>
+	    
+	    <select id="searchDeliveryByDemandeId" resultType="com.entity.Delivery">
+		select* from delivery where DEMANDEID=#{0}
+	    </select>
+	    
+	    <select id="searchDeliveryByDidBid" resultType="com.entity.Delivery">
+		select* from delivery where DELIVERYID=#{0} and BOOKID=#{1}
+	    </select>
+	    
+	    <select id="searchDeliveryByDeidBid" resultType="com.entity.Delivery">
+		select* from delivery where DEMANDEID=#{0} and BOOKID=#{1}
+	    </select>
+	    
+	    <select id="demandeWaitingForDelivery" resultType="com.entity.Demande">
+	    SELECT * from demande where bookId in (select bookId from book where bookSellerId=#{0}) and deliverOrNot=0
+	    </select>
+	    
+	    <select id="searchDeliveryByDidDid" resultType="com.entity.Demande">
+	    SELECT * from delivery where DELIVERYID=#{0} and DEMANDEID=#{1}
+	    </select>
+	    
+	    <select id="searchDelivery" resultType="com.entity.Delivery">
+		select* from delivery where DELIVERYID=#{0}
+	    </select>
+	    
+	    <insert id="insertDelivery">
+	    insert into delivery(DELIVERYID,DEMANDEID,USERID,SIGNORNOT,DELIVERYADRESS,CREATEDATE,ARRIVEDATE,NOWARRIVEAT,BOOKID) values (#{deliveryId,jdbcType=VARCHAR},#{demandeId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{signOrNot,jdbcType=NUMERIC},#{deliveryAdress,jdbcType=VARCHAR},#{createDate,jdbcType=TIMESTAMP},#{arriveDate,jdbcType=TIMESTAMP},#{nowArriveAt,jdbcType=VARCHAR},#{bookId,jdbcType=VARCHAR})
+	    </insert>
+	    
+	    <update id="updateDelivery">
+			update delivery set DEMANDEID=#{demandeId,jdbcType=VARCHAR},USERID=#{userId,jdbcType=VARCHAR},SIGNORNOT=#{signOrNot,jdbcType=NUMERIC},DELIVERYADRESS=#{deliveryAdress,jdbcType=TIMESTAMP},CREATEDATE=#{createDate,jdbcType=TIMESTAMP},ARRIVEDATE=#{arriveDate,jdbcType=TIMESTAMP},NOWARRIVEAT=#{nowArriveAt,jdbcType=VARCHAR} where DELIVERYID=#{deliveryId,jdbcType=VARCHAR} and BOOKID=#{bookId,jdbcType=VARCHAR}
+		</update>
+		
+		<delete id="deleteDelivery">
+		delete from delivery where DELIVERYID=#{0}
+		</delete>
+	    
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.RefundDao">
+<resultMap id="BaseRefundMap" type="com.entity.Refund"></resultMap>
+
+	<select id="searchRefund" resultType="com.entity.Refund">
+		select * from refund where demandeId=#{0} and bookId=#{1}
+	</select>
+	
+	<select id="searchRefundByUserId" resultType="com.entity.Refund">
+		select * from refund where userId=#{0} 
+	</select>
+	
+	<select id="searchRefundBySellerId" resultType="com.entity.Refund">
+		select * from refund where bookId in (Select bookId from book where bookSellerId=#{0})
+	</select>
+	
+	<insert id="insertRefund">
+		insert into refund(DEMANDEID,BOOKID,USERID,REFUNDREASON,BEGINDATE,ACCEPTREFUND,RETURNMONEY) values (#{demandeId,jdbcType=VARCHAR},#{bookId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{refundReason,jdbcType=VARCHAR},#{beginDate,jdbcType=TIMESTAMP},#{acceptRefund,jdbcType=NUMERIC},#{returnMoney,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<update id="updateRefund">
+		update refund set REFUNDREASON=#{refundReason,jdbcType=VARCHAR},BEGINDATE=#{beginDate,jdbcType=TIMESTAMP},ACCEPTREFUND=#{acceptRefund,jdbcType=NUMERIC},RETURNMONEY=#{returnMoney,jdbcType=TIMESTAMP} WHERE DEMANDEID=#{demandeId,jdbcType=VARCHAR} and BOOKID=#{bookId,jdbcType=VARCHAR}
+	</update>
+
+
+</mapper>

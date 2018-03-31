@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.BookDao">
+<resultMap id="BaseBookMap" type="com.entity.Book">
+	<id property="bookId" column="book_bookId"/>
+</resultMap>
+
+	<select id="listBooks" resultType="com.entity.Book">
+		select* from book 
+	</select>
+	
+	<select id="listBooksOnSale" resultType="com.entity.Book">
+		select* from book where saleOrNot=1
+	</select>
+	
+	<select id="bookMostSale" resultType="com.entity.Book">
+		SELECT * FROM book where sale=(select MAX(sale) from book where saleOrNot=1)
+	</select>
+	
+	<select id="selectBooks" resultType="com.entity.Book">
+		select* from book where BOOKID=#{bookId}
+	</select>
+	
+	<select id="selectBooksBySellerName" resultMap="BaseBookMap">
+		SELECT book.*,user.userName FROM book left JOIN user on book.bookSellerId=`user`.userId WHERE `user`.userName like #{0} and book.saleOrNot=1
+	</select>
+	
+	<select id="selectBooksNotSaleBySellerName" resultMap="BaseBookMap">
+		SELECT book.*,user.userName FROM book left JOIN user on book.bookSellerId=`user`.userId WHERE `user`.userName like #{0} and book.saleOrNot=0
+	</select>
+	
+	<select id="selectSellerNameDistinct" resultMap="BaseBookMap">
+		SELECT DISTINCT user.userName FROM book left JOIN user on book.bookSellerId=`user`.userId WHERE `user`.userName like #{0}
+	</select>
+	
+	<select id="searchBooksByBookName" resultType="com.entity.Book">
+		select* from book where BOOKNAME like #{0} and saleOrNot=1
+	</select>
+	
+	<insert id="insertBook">
+		insert into book(BOOKID,BOOKNAME,BOOKQUANTITY,BOOKUNITPRICE,BOOKSELLERID,SALE,SALEORNOT) values (#{bookId,jdbcType=VARCHAR},#{bookName,jdbcType=VARCHAR},#{bookQuantity,jdbcType=NUMERIC},#{bookUnitPrice,jdbcType=FLOAT},#{bookSellerId,jdbcType=VARCHAR},#{sale,jdbcType=NUMERIC},#{saleOrNot,jdbcType=NUMERIC})
+	</insert>
+	
+	<update id="updateBook">
+		update book set BOOKNAME=#{bookName,jdbcType=VARCHAR},BOOKQUANTITY=#{bookQuantity,jdbcType=NUMERIC},BOOKUNITPRICE=#{bookUnitPrice,jdbcType=FLOAT},SALE=#{sale,jdbcType=NUMERIC},SALEORNOT=#{saleOrNot,jdbcType=NUMERIC} WHERE BOOKID=#{bookId,jdbcType=VARCHAR}
+	</update>
+	
+	<delete id="deleteBook">
+		delete from book where BOOKID=#{id}
+	</delete>
+	
+</mapper>

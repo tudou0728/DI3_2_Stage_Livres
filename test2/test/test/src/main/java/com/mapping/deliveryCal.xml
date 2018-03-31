@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.DeliveryCalDao">
+<resultMap id="DeliveryCalMap" type="com.entity.DeliveryCal"></resultMap>
+	
+	<select id="selectNumber" resultType="com.entity.DeliveryCal">
+		select* from deliveryCal where SELLERID=#{0} and USERID=#{1}
+	</select>
+	
+	<select id="selectNumberOnlyByUserId" resultType="com.entity.DeliveryCal">
+		select* from deliveryCal where  USERID=#{0}
+	</select>
+	
+	<insert id="insertDeliveryCal">
+		insert into deliveryCal(SELLERID,USERID,DELIVERYId,BOOKID) values (#{sellerId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{deliveryId,jdbcType=VARCHAR},#{bookId,jdbcType=VARCHAR})
+	</insert>
+	
+	
+	<delete id="deleteDeliveryCal">
+		delete from deliveryCal where DELIVERYID=#{0}
+	</delete>
+	
+	<delete id="deleteDeliveryCalOnlyByUserId">
+		delete from deliveryCal where USERID=#{0}
+	</delete>
+	
+</mapper>
